@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -34,11 +35,11 @@ namespace CP380_B1_BlockList.Models
             var json = JsonSerializer.Serialize(Data);
 
             //
-            // TODO
-            //
-            var inputString = $""; // TODO
+            // TODO - Done
+            //                
+            var inStr = $"{this.TimeStamp:yyyy-MM-dd h:mm:ss tt}-{this.PreviousHash}-{this.Nonce}-{json}"; // TODO
 
-            var inputBytes = Encoding.ASCII.GetBytes(inputString);
+            var inputBytes = Encoding.ASCII.GetBytes(inStr);
             var outputBytes = sha256.ComputeHash(inputBytes);
 
             return Base64UrlEncoder.Encode(outputBytes);
@@ -46,7 +47,14 @@ namespace CP380_B1_BlockList.Models
 
         public void Mine(int difficulty)
         {
-            // TODO
+            // TODO - Done
+            string hashVal = new('C', difficulty);
+
+            while (Hash.Substring(0, difficulty) != hashVal)
+            {
+                this.Nonce++;
+                Hash = CalculateHash();
+            }
         }
     }
 }
